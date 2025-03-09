@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/movie_provider.dart';
+import 'package:movie_app/providers/movie_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutMeScreen extends StatelessWidget {

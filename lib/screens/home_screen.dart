@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_app/services/api_service.dart';
 import 'package:movie_app/providers/movie_provider.dart';
-import 'package:movie_app/providers/auth_provider.dart';
+// import 'package:movie_app/providers/auth_provider.dart';
 import 'package:movie_app/screens/movie_detail_screen.dart';
 import 'package:movie_app/screens/login_screen.dart';
 

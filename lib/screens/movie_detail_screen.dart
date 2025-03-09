@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../providers/movie_provider.dart';
 
 class MovieDetailScreen extends StatefulWidget {
@@ -15,12 +16,18 @@ class MovieDetailScreen extends StatefulWidget {
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
   Map<String, dynamic>? movie;
   List<dynamic> castList = [];
+  List<dynamic> reviews = [];
+  List<dynamic> videos = [];
+  bool showFullSynopsis = false;
+  Map<int, bool> showFullReview = {};
 
   @override
   void initState() {
     super.initState();
     loadMovieDetail();
     loadCast();
+    loadReviews();
+    loadVideos();
   }
 
   void loadMovieDetail() async {
@@ -42,6 +49,31 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       final data = json.decode(response.body);
       setState(() {
         castList = data['cast'].take(10).toList();
+      });
+    }
+  }
+
+  void loadReviews() async {
+    final url = Uri.parse("https://api.themoviedb.org/3/movie/${widget.movieId}/reviews?api_key=fe8867a1b16497806297d997a54901c3");
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        reviews = data['results'];
+        for (var i = 0; i < reviews.length; i++) {
+          showFullReview[i] = false;
+        }
+      });
+    }
+  }
+
+  void loadVideos() async {
+    final url = Uri.parse("https://api.themoviedb.org/3/movie/${widget.movieId}/videos?api_key=fe8867a1b16497806297d997a54901c3");
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        videos = data['results'].where((video) => video['site'] == 'YouTube').toList();
       });
     }
   }
@@ -148,11 +180,28 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      movie!['overview'],
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(fontSize: 16),
-                    ),
+                          Text(
+                            showFullSynopsis 
+                              ? movie!['overview'] 
+                              : (movie!['overview'].length > 150 
+                                  ? "${movie!['overview'].substring(0, 150)}..." 
+                                  : movie!['overview']
+                                ),
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          if (movie!['overview'].length > 150)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  showFullSynopsis = !showFullSynopsis;
+                                });
+                              },
+                              child: Text(
+                                showFullSynopsis ? "Read Less" : "Read More",
+                                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                              ),
+                            ),
                     SizedBox(height: 16),
                     Text(
                       "Cast",
@@ -197,6 +246,59 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               },
                             ),
                           ),
+                    SizedBox(height: 16),
+
+                    Text("Videos", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 8),
+                      videos.isEmpty
+                          ? Text("No videos available.")
+                          : Column(
+                              children: videos.map((video) {
+                                return ListTile(
+                                  leading: Icon(Icons.play_circle_fill, color: Colors.red),
+                                  title: Text(video['name']),
+                                  onTap: () async {
+                                    final url = "https://www.youtube.com/watch?v=${video['key']}";
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    }
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                      SizedBox(height: 16),
+
+                      // 📝 REVIEWS SECTION
+                      Text("Reviews", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 8),
+                      reviews.isEmpty
+                          ? Text("No reviews available.")
+                          : Column(
+                              children: reviews.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      var review = entry.value;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(review['author'], style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 4),
+                          Text(
+                            showFullReview[index]! 
+                              ? review['content'] 
+                              : (review['content'].length > 100 
+                                  ? "${review['content'].substring(0, 100)}..." 
+                                  : review['content']
+                                ),
+                            textAlign: TextAlign.justify,
+                          ),
+                          TextButton(
+                            onPressed: () => setState(() => showFullReview[index] = !showFullReview[index]!),
+                            child: Text(showFullReview[index]! ? "Read Less" : "Read More"),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                    ),
                   ],
                 ),
               ),
