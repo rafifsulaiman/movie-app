@@ -1,16 +1,4 @@
 # movie_app
+Saya mempelajari cara mengambil data dari web publik dengan merujuk pada berbagai sumber seperti YouTube dan Google. Dalam prosesnya, mereka mencoba memahami metode yang digunakan untuk mengambil dan mengolah data dari API pihak ketiga, seperti TMDB.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Awalnya, saya juga berencana untuk mengimplementasikan sistem autentikasi langsung di Flutter, termasuk fitur login, register, dan logout, dengan menggunakan database lokal atau layanan seperti Firebase. Namun, karena keterbatasan waktu dan belum memiliki cukup pengalaman dalam pengelolaan database di Flutter, saya akhirnya memutuskan untuk tidak menggunakan Firebase, Shared Preferences, Hive, atau opsi serupa. Sebagai gantinya, saya memilih pendekatan yang lebih sederhana untuk mencapai tujuan proyek dalam waktu yang tersedia dan mengimplementasikan sesuai kewajiban saja tanpa fitur tambahan.
