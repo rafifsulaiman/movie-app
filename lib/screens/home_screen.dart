@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+// import 'package:movie_app/screens/about_me_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_app/services/api_service.dart';
 import 'package:movie_app/providers/movie_provider.dart';
 // import 'package:movie_app/providers/auth_provider.dart';
 import 'package:movie_app/screens/movie_detail_screen.dart';
-import 'package:movie_app/screens/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -46,18 +46,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Scaffold(
       appBar: AppBar(
         title: Text("Movies"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () async {
-              // await authProvider.logout();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.logout),
+        //     onPressed: () async {
+        //       // await authProvider.logout();
+        //       Navigator.pushReplacement(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => AboutMeScreen()),
+        //       );
+        //     },
+        //   ),
+        // ],
         bottom: TabBar(
           controller: _tabController,
           tabs: [
