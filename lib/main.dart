@@ -36,14 +36,19 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.indigo[900], // ✅ Ubah background jadi navy
+      ),
       home: Scaffold(
+        backgroundColor: Colors.indigo[900], // ✅ Pastikan di sini juga navy
         body: _screens[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
+          backgroundColor: Colors.indigo[800], // ✅ Warna navy lebih gelap untuk navbar
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.movie),

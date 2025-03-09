@@ -104,7 +104,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     final double userScore = (movie!['vote_average'] ?? 0).toDouble();
 
     return Scaffold(
-      appBar: AppBar(title: Text(movie!['title'], maxLines: 1, overflow: TextOverflow.ellipsis)),
+      appBar: AppBar(title: Text(movie!['title'], maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.indigo[800],
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -127,7 +129,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     children: [
                       Text(
                         movie!['title'],
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -156,12 +158,12 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               ),
                               Text(
                                 userScore.toStringAsFixed(1),
-                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: _getScoreColor(userScore)),
                               ),
                             ],
                           ),
                           SizedBox(width: 8),
-                          Text("User Score", style: TextStyle(fontSize: 14)),
+                          Text("User Score", style: TextStyle(fontSize: 14,  color: Colors.grey)),
                         ],
                       ),
                     ],
@@ -172,7 +174,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             SizedBox(height: 16),
             Text(
               "Synopsis",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,  color: Colors.white),
             ),
             SizedBox(height: 8),
             Expanded(
@@ -188,7 +190,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                   : movie!['overview']
                                 ),
                             textAlign: TextAlign.justify,
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
                           if (movie!['overview'].length > 150)
                             GestureDetector(
@@ -205,7 +207,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     SizedBox(height: 16),
                     Text(
                       "Cast",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     SizedBox(height: 8),
                     castList.isEmpty
@@ -235,7 +237,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                       SizedBox(height: 5),
                                       Text(
                                         cast['name'],
-                                        style: TextStyle(fontSize: 12),
+                                        style: TextStyle(fontSize: 12, color: Colors.grey),
                                         textAlign: TextAlign.center,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
@@ -248,7 +250,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           ),
                     SizedBox(height: 16),
 
-                    Text("Videos", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text("Videos", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                       SizedBox(height: 8),
                       videos.isEmpty
                           ? Text("No videos available.")
@@ -256,7 +258,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               children: videos.map((video) {
                                 return ListTile(
                                   leading: Icon(Icons.play_circle_fill, color: Colors.red),
-                                  title: Text(video['name']),
+                                  title: Text(video['name'], style: TextStyle(color: Colors.grey)),
                                   onTap: () async {
                                     final url = "https://www.youtube.com/watch?v=${video['key']}";
                                     if (await canLaunch(url)) {
@@ -269,7 +271,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       SizedBox(height: 16),
 
                       // 📝 REVIEWS SECTION
-                      Text("Reviews", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("Reviews", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                       SizedBox(height: 8),
                       reviews.isEmpty
                           ? Text("No reviews available.")
@@ -280,7 +282,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(review['author'], style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(review['author'], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
                           SizedBox(height: 4),
                           Text(
                             showFullReview[index]! 
@@ -290,10 +292,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                   : review['content']
                                 ),
                             textAlign: TextAlign.justify,
+                            style: TextStyle(color: Colors.grey),
                           ),
                           TextButton(
                             onPressed: () => setState(() => showFullReview[index] = !showFullReview[index]!),
-                            child: Text(showFullReview[index]! ? "Read Less" : "Read More"),
+                            child: Text(showFullReview[index]! ? "Read Less" : "Read More", style: TextStyle(color: Colors.blue)),
                           ),
                         ],
                       );

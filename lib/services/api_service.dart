@@ -16,4 +16,16 @@ class ApiService {
       throw Exception("Failed to load movies");
     }
   }
+
+  static Future<List<dynamic>> searchMovies(String query, String category) async {
+    final url = Uri.parse("$baseUrl/search/movie?query=$query&api_key=$apiKey&category=$category");
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['results'];
+    } else {
+      throw Exception("Failed to search movies");
+    }
+  }
 }

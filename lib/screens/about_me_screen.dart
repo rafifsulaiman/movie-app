@@ -11,7 +11,7 @@ class AboutMeScreen extends StatelessWidget {
     final watchlist = movieProvider.watchlist;
 
     return Scaffold(
-      appBar: AppBar(title: Text("About Me")),
+      appBar: AppBar(title: Text("About Me", style: TextStyle(color: Colors.white)), backgroundColor: Colors.indigo[800]),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -23,9 +23,9 @@ class AboutMeScreen extends StatelessWidget {
                 backgroundImage: NetworkImage("https://via.placeholder.com/150"),
               ),
               SizedBox(height: 10),
-              Text("Rafif Sulaiman", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("Nickname: Rafif"),
-              Text("Hobbies: Coding, Watching Movies"),
+              Text("Rafif Sulaiman", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey)),
+              Text("Nickname: Rafif", style: TextStyle(color: Colors.grey)),
+              Text("Hobbies: Coding, Watching Movies", style: TextStyle(color: Colors.grey)),
               TextButton(
                 onPressed: () async {
                   final Uri url = Uri.parse("https://www.instagram.com/rafifsulaimann");
@@ -35,15 +35,15 @@ class AboutMeScreen extends StatelessWidget {
                     debugPrint("Could not launch $url");
                   }
                 },
-                child: Text("Instagram Profile", style: TextStyle(color: Colors.blue)),
+                child: Text("Instagram Profile", style: TextStyle(color: Colors.white)),
               ),
               SizedBox(height: 20),
-              Text("⭐ Favorite Movies", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text("⭐ Favorite Movies", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey)),
               favorites.isEmpty
                   ? Center(child: Text("No favorites yet!"))
                   : _buildMovieList(favorites),
               SizedBox(height: 20),
-              Text("🎬 Watchlist", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text("🎬 Watchlist", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey)),
               watchlist.isEmpty
                   ? Center(child: Text("No movies in watchlist!"))
                   : _buildMovieList(watchlist),
