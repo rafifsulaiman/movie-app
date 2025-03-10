@@ -5,4 +5,6 @@ Selain itu, saya juga mendalami penggunaan url_launcher untuk membuka tautan eks
 
 Kendala yang saya rasakan ketika mengerjakan proyek ini adalah ketika menghubungkan login, register, dan logout menggunakan layanan pihak ketiga Firebase. Awalnya saya sudah hampir menyerah implementasi tersebut karena berbagai cara yang saya lakukan gagal semua dan menghasilkan error. Namun, setelah saya menemukan sebuah video tutorial melalui YouTube, saya berhasil menghubungkannnya dan berhasil mengintegrasikan data-datanya dengan database dari Firebase.
 
-Referensi yang saya gunakan adalah materi pembelajaran saya selama mengikuti mata kuliah PBP, tutorial yang diberikan oleh themoviedb.org dalam mendapatkan data film nya, tutorial YouTube dan tutorial bawaan Firebase untuk cara integrasi Firebase dengan Flutter serta cara menggunakan database yang disediakan Firebase, dan penggunaan url_launcher untuk melakukan redirect dari proyek Flutter ke link url yang ada.
+Referensi yang saya gunakan adalah materi pembelajaran saya selama mengikuti mata kuliah PBP, tutorial yang diberikan oleh themoviedb.org dan video tutorial YouTube dalam mendapatkan data film nya, tutorial YouTube dan tutorial bawaan Firebase untuk cara integrasi Firebase dengan Flutter serta cara menggunakan database yang disediakan Firebase, dan penggunaan url_launcher untuk melakukan redirect dari proyek Flutter ke link url yang ada.
+
+third-party libraries yang digunakan: http, firebase google, provider, url_launcher, cloud_firestore
