@@ -158,8 +158,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            icon: Icon(isFav ? Icons.favorite : Icons.favorite_border, color: Colors.red),
-                            onPressed: () => movieProvider.toggleFavorite(movie),
+                            icon: Icon(
+                              isFav ? Icons.favorite : Icons.favorite_border,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              movieProvider.toggleFavorite(movie);
+                              print("🔄 Favorite button pressed: ${movie['title']}");
+                            },
                           ),
                           IconButton(
                             icon: Icon(isWatchlist ? Icons.bookmark : Icons.bookmark_border, color: Colors.blue),

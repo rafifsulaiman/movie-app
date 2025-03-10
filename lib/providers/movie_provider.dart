@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:movie_app/services/auth_service.dart';
+import 'package:http/http.dart' as http;
 
 class MovieProvider with ChangeNotifier {
   List<Map<String, dynamic>> _favorites = [];
@@ -17,16 +19,39 @@ class MovieProvider with ChangeNotifier {
     await _loadData();
   }
 
-  Future<void> _loadData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final favData = prefs.getString('favorites');
-    final watchData = prefs.getString('watchlist');
+  Future<Map<String, dynamic>?> fetchMovieDetails(int movieId) async {
+    final apiKey = "fe8867a1b16497806297d997a54901c3"; // Ganti dengan API key TMDB kamu
+    final url = "https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey";
 
-    _favorites = favData != null ? List<Map<String, dynamic>>.from(json.decode(favData)) : [];
-    _watchlist = watchData != null ? List<Map<String, dynamic>>.from(json.decode(watchData)) : [];
-
-    notifyListeners();
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    }
+    return null;
   }
+
+  Future<void> _loadData() async {
+    final userData = await AuthService().getUserData();
+    if (userData != null) {
+      _favorites = [];
+      _watchlist = [];
+
+      // Ambil data film berdasarkan ID
+      for (int id in List<int>.from(userData['favorites'] ?? [])) {
+        final movie = await fetchMovieDetails(id);
+        if (movie != null) _favorites.add(movie);
+      }
+      for (int id in List<int>.from(userData['watchlist'] ?? [])) {
+        final movie = await fetchMovieDetails(id);
+        if (movie != null) _watchlist.add(movie);
+      }
+
+      print("Favorites Loaded: $_favorites");
+      print("Watchlist Loaded: $_watchlist");
+      notifyListeners();
+    }
+  }
+
 
   Future<void> _saveData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -34,23 +59,25 @@ class MovieProvider with ChangeNotifier {
     await prefs.setString('watchlist', json.encode(_watchlist));
   }
 
-  void toggleFavorite(Map<String, dynamic> movie) {
-    final existingIndex = _favorites.indexWhere((m) => m['id'] == movie['id']);
-    if (existingIndex != -1) {
-      _favorites.removeAt(existingIndex);
+  void toggleFavorite(Map<String, dynamic> movieData) {
+    if (_favorites.any((m) => m['id'] == movieData['id'])) {
+      _favorites.removeWhere((m) => m['id'] == movieData['id']);
+      AuthService().removeFromFavorites(movieData['id']);
     } else {
-      _favorites.add(movie);
+      _favorites.add(movieData);
+      AuthService().addToFavorites(movieData['id']);
     }
     _saveData();
     notifyListeners();
   }
 
-  void toggleWatchlist(Map<String, dynamic> movie) {
-    final existingIndex = _watchlist.indexWhere((m) => m['id'] == movie['id']);
-    if (existingIndex != -1) {
-      _watchlist.removeAt(existingIndex);
+  void toggleWatchlist(Map<String, dynamic> movieData) {
+    if (_watchlist.any((m) => m['id'] == movieData['id'])) {
+      _watchlist.removeWhere((m) => m['id'] == movieData['id']);
+      AuthService().removeFromWatchlist(movieData['id']);
     } else {
-      _watchlist.add(movie);
+      _watchlist.add(movieData);
+      AuthService().addToWatchlist(movieData['id']);
     }
     _saveData();
     notifyListeners();

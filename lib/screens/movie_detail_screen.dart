@@ -99,8 +99,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       );
     }
 
-    final isFav = movieProvider.isFavorite(movie!['id']);
-    final isWatchlist = movieProvider.isInWatchlist(movie!['id']);
+    // final isFav = movieProvider.isFavorite(movie!['id']);
+    // final isWatchlist = movieProvider.isInWatchlist(movie!['id']);
     final double userScore = (movie!['vote_average'] ?? 0).toDouble();
 
     return Scaffold(
@@ -311,11 +311,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Icon(isFav ? Icons.favorite : Icons.favorite_border, color: Colors.red),
+                  icon: Icon(
+                    movieProvider.favorites.contains(widget.movieId) ? Icons.favorite : Icons.favorite_border,
+                    color: Colors.red,
+                  ),
                   onPressed: () => movieProvider.toggleFavorite(movie!),
                 ),
                 IconButton(
-                  icon: Icon(isWatchlist ? Icons.bookmark : Icons.bookmark_border, color: Colors.blue),
+                  icon: Icon(
+                    movieProvider.watchlist.contains(widget.movieId) ? Icons.bookmark : Icons.bookmark_border,
+                    color: Colors.red,
+                  ),
                   onPressed: () => movieProvider.toggleWatchlist(movie!),
                 ),
               ],
